@@ -15,5 +15,7 @@ public interface ExpenseRepository {
 
     List<Expense> findAll();
 
+    void deleteById(Long expenseId);
+
 
 }
