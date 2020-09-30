@@ -21,22 +21,23 @@ public class ExpensesServiceImpl implements ExpensesService{
     public Optional<List<Expense>> getExpenseBySearchCriteria(ExpensesSearchCriteria criteria) {
         List<Expense> filteredExpenses = new ArrayList<>();
         List<Expense> allExpenses = expenseRepository.findAll();
+        filteredExpenses = allExpenses;
 
         if (criteria.getTagNames() != null) {
-            filteredExpenses = allExpenses.stream()
+            filteredExpenses = filteredExpenses.stream()
                     .filter(expense -> expense.getTags().stream()
                             .anyMatch(tag -> criteria.getTagNames().contains(tag.getName())))
                     .collect(Collectors.toList());
         }
 
         if (criteria.getFromDate() != null) {
-            filteredExpenses = allExpenses.stream()
+            filteredExpenses = filteredExpenses.stream()
                     .filter(expense -> expense.getCreationDate().isAfter(criteria.getFromDate().toLocalDateTime()))
                     .collect(Collectors.toList());
         }
 
         if (criteria.getToDate() != null) {
-            filteredExpenses = allExpenses.stream()
+            filteredExpenses = filteredExpenses.stream()
                     .filter(expense -> expense.getCreationDate().isBefore(criteria.getToDate().toLocalDateTime()))
                     .collect(Collectors.toList());
         }
