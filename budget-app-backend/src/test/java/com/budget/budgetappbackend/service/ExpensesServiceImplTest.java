@@ -97,7 +97,7 @@ class ExpensesServiceImplTest {
         Optional<List<Expense>> foundExpenses = expensesService.getExpenseBySearchCriteria(expensesSearchCriteria);
         assertTrue(foundExpenses.get().size() > 0);
     }
-    
+
     @Test
     void createExpense() {
         Expense createdExpense;

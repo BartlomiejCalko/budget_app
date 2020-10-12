@@ -17,6 +17,9 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
     private List<Expense> expenses = new ArrayList<Expense>();
 
+    public Tag() {
+    }
+
     public Tag(String name) {
         super();
         this.name = name;
