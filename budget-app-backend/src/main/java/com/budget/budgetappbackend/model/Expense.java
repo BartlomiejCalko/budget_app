@@ -17,10 +17,20 @@ public class Expense {
     private Double value;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "expense_tags", joinColumns = {@JoinColumn(name = "expense_id", referencedColumnName = "id",
+    @JoinTable(name = "expenses_tags", joinColumns = {@JoinColumn(name = "expense_id", referencedColumnName = "id",
     nullable = false, updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id",
             nullable = false, updatable = false)})
     private List<Tag> tags;
+
+    private String formattedDate;
+
+    public String getFormattedDate() {
+        return formattedDate;
+    }
+
+    public void setFormattedDate(String formattedDate) {
+        this.formattedDate = formattedDate;
+    }
 
     public Expense() {
     }

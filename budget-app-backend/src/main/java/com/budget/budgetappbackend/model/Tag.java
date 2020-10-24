@@ -1,5 +1,7 @@
 package com.budget.budgetappbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +13,12 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(unique = true, length = 30)
     private String name;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Expense> expenses = new ArrayList<Expense>();
 
     public Tag() {

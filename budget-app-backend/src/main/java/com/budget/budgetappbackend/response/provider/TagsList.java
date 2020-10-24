@@ -6,22 +6,22 @@ import java.util.List;
 
 public class TagsList {
 
-    private List<Tag> tagsList;
+    private List<Tag> tags;
 
     public TagsList(List<Tag> tagsList) {
         super();
-        this.tagsList = tagsList;
+        this.tags = tagsList;
     }
 
     public TagsList() {
         super();
     }
 
-    public List<Tag> getTagsList() {
-        return tagsList;
+    public List<Tag> getTags() {
+        return tags;
     }
 
     public void setTagsList(List<Tag> tagsList) {
-        this.tagsList = tagsList;
+        this.tags = tagsList;
     }
 }

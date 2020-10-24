@@ -6,21 +6,21 @@ import java.util.List;
 
 public class ExpensesList {
 
-    private List<Expense> expenseList;
+    private List<Expense> expenses;
 
     public ExpensesList(List<Expense> expenseList) {
-        this.expenseList = expenseList;
+        this.expenses = expenseList;
     }
 
     public ExpensesList(){
         super();
     }
 
-    public List<Expense> getExpenseList() {
-        return expenseList;
+    public List<Expense> getExpenses() {
+        return expenses;
     }
 
     public void setExpenseList(List<Expense> expenseList) {
-        this.expenseList = expenseList;
+        this.expenses = expenseList;
     }
 }
