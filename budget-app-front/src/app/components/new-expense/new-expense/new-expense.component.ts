@@ -2,13 +2,14 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { Tag } from 'src/app/models/Tag';
+import { TagService } from 'src/app/sevices/tag/tag.service';
 
 @Component({
   selector: 'app-new-expense',
   templateUrl: './new-expense.component.html',
   styleUrls: ['./new-expense.component.css']
 })
-export class NewExpenseComponent {
+export class NewExpenseComponent implements OnInit{
 
   @ViewChild('tagsInput', {static:true}) tagsInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static:true}) auto: MatAutocomplete;
@@ -32,9 +33,16 @@ export class NewExpenseComponent {
 
 
 
-  constructor() { }
+  constructor(private tagService: TagService) { }
 
-  public add(event: any) {}
+
+  ngOnInit(): void {
+    
+  }
+
+  public add(event: any) {
+    console.log('add invoked');
+  }
 
   public addExpenseClickHandler() {
     console.log('addExpenseClickHandler invoked');
