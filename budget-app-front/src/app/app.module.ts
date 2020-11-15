@@ -19,11 +19,17 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { AddedExpenseModalComponent } from './components/new-expense/added-expense-modal/added-expense-modal/added-expense-modal.component';
+import { ExpensesTableComponent } from './components/expenses-table/expenses-table/expenses-table.component';
+import { EditExpeneseModalComponent } from './components/expenses-table/edit-expense-modal/edit-expenese-modal/edit-expenese-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewExpenseComponent
+    NewExpenseComponent,
+    AddedExpenseModalComponent,
+    ExpensesTableComponent,
+    EditExpeneseModalComponent
   ],
   imports: [
     BrowserModule,

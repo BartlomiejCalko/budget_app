@@ -6,7 +6,10 @@
         <p>
             <mat-form-field class="chip-list">
                 <mat-chip-list #chipList aria-label="Tags selection">
-                    <mat-chip>TEST</mat-chip>
+                    <mat-chip (removed)="remove(tag)" [removable]="removableChip" *ngFor="let tag of selectedTags">
+                        {{tag.name}}   
+                        <mat-icon matChipRemove>cancel</mat-icon> 
+                    </mat-chip>
                 </mat-chip-list>
                     
                     <input 
@@ -22,8 +25,8 @@
                     [disabled]="selectedTags.length >= 5">
                 
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option>
-                    TEST MAT-OPTION
+                <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                    {{tag.name}}
                 </mat-option>
 
             </mat-autocomplete>
@@ -36,18 +39,17 @@
                     matInput
                     #valueInput
                     formControlName="value"
-                    type="number"
-                    pattern="^\d*(\.\d{0,2})?$"    
+                    type="number"    
                     placeholder="Add expense value"
                 >
             </mat-form-field>
         </p>
 
         <div class="center">
-            <button mat-flat-button color="primary" type="button" mat-button>Show expenses</button>
+            <button mat-flat-button color="primary" routerLink="../expenses-table" type="button" mat-button>Show expenses</button>
 
             <button mat-flat-button color="accent" type="submit" mat-button (click)="addExpenseClickHandler()" 
-            [disabled]="selectedTags.length>0">Add expense</button>
+            [disabled]="selectedTags.length<1">Add expense</button>
 
         </div>
 

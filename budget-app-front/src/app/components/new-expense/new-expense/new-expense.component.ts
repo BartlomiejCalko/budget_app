@@ -1,8 +1,14 @@
+import { map, filter, tap } from 'rxjs/operators'
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Tag } from 'src/app/models/Tag';
 import { TagService } from 'src/app/sevices/tag/tag.service';
+import { Observable } from 'rxjs';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { ExpenseService } from 'src/app/services/expense/expense.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddedExpenseModalComponent } from '../added-expense-modal/added-expense-modal/added-expense-modal.component';
 
 @Component({
   selector: 'app-new-expense',
@@ -17,10 +23,13 @@ export class NewExpenseComponent implements OnInit{
   public readonly separatorKeyCodes: number[] = [13,188];
   public addOnBlur = true;
   public selectedTags: Tag[] = [];
+  public allTags: Tag[] = [];
+  public filteredTags: Observable<Tag[]>;
+  public removableChip: boolean = true;
 
   public expenseForm = new FormGroup({
     tags: new FormControl(undefined),
-    value: new FormControl(undefined, Validators.required)
+    value: new FormControl(undefined, [Validators.required, Validators.pattern('^(?:0|[1-9][0-9]*)\.[0-9]+$')])
   });
 
   get tagsControl(): FormControl {
@@ -31,25 +40,73 @@ export class NewExpenseComponent implements OnInit{
     return this.expenseForm.get('value') as FormControl
   }
 
-
-
-  constructor(private tagService: TagService) { }
-
+  constructor(private tagService: TagService, private expenseService: ExpenseService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    
+    this.tagService.getAllTags().subscribe(response=> {
+      this.allTags = response;
+    });    
+    this.filteredTags = this.tagsControl.valueChanges.pipe(
+      map((val: any | null) => val ? this.filterTags(val) : this.allTags.slice())
+    );
   }
 
-  public add(event: any) {
-    console.log('add invoked');
+  private filterTags(tag: any):Tag[] {
+    let filterValue = '';
+    if(typeof(tag)=="object") {
+      filterValue = tag.name.toLowerCase();
+    }else {
+      filterValue = tag.toLowerCase();
+    }
+    return this.allTags.filter(val => val.name.toLowerCase().includes(filterValue));
+  }
+
+  public remove(tagToRemove: Tag) {
+    this.selectedTags = this.selectedTags.filter(tag=> tag.name != tagToRemove.name)
+  }
+
+
+  public add(event: MatChipInputEvent) {
+    let input = event.input.value;
+    if(input != '') {
+      input = input.trim();
+      let inputArr = input.split(" ");
+      for(let currentInp of inputArr) {
+        if(this.allTags.filter(tag=> tag.name.includes(currentInp)).length===0) {
+          this.selectedTags.push({ name : currentInp.trim()});
+        }
+      }
+    }
+    this.tagsInput.nativeElement.value='';
+
+
   }
 
   public addExpenseClickHandler() {
-    console.log('addExpenseClickHandler invoked');
+    let expenseToAdd = this.expenseService.getExpenseFromData(this.selectedTags, this.valueControl.value);
+    this.expenseService.addExpense(null).subscribe(response=> {
+      this.showAddExpenseModal();
+      })
   }
 
-  public selected(event: any) {
-    console.log('selected method invoked');
+
+  private showAddExpenseModal() {
+    let dialogRef = this.dialog.open(AddedExpenseModalComponent, {
+      width: '250px',
+      data: {label : 'Success', content : 'Expense added successfully'}
+    });
+    dialogRef.afterClosed().subscribe(result=> {
+      console.log('The dialog was closed');
+    });
+  }
+
+  public selected(event: MatAutocompleteSelectedEvent) {
+    
+    let selectedTag = event.option.value;
+    this.selectedTags.push(selectedTag);
+    this.tagsInput.nativeElement.value = '';
+
+
   }
 
   public submitExpense(event: any) {
