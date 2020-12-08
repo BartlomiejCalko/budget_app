@@ -1,5 +1,6 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Tag } from 'src/app/models/Tag';
 
 @Injectable({
@@ -7,21 +8,36 @@ import { Tag } from 'src/app/models/Tag';
 })
 export class TagService {
 
-  constructor() { }
+  public allTagsResult: Observable<Tag[]>;
+  public hostAdress: String = 'http://localhost:8081/'
+  public subject = new Subject<HttpErrorResponse>();
 
-  public getAllTags(): Observable<Tag[]>{
+  constructor(private http: HttpClient) { }
 
-    let tag1: Tag = {name: "biedronka"};
-    let tag2: Tag = {name: "lidl"};
-    let tag3: Tag = {name: "elektronika"};
-    let tag4: Tag = {name: "drogeria"};
-    let tags = [tag1, tag2, tag3, tag4];
-
-    return of(tags);
-  
+  onErrorOccurrs(): Observable<HttpErrorResponse> {
+    return this.subject.asObservable();
   }
 
 
+  public getAllTags(): Observable<Tag[]>{
+
+    let url = this.hostAdress.concat('tags');
+    this.allTagsResult = new Observable( observer => {
+      this.http.get(url).subscribe( response => {
+        
+        let tagsFromResponse = response['tags'];
+        observer.next(tagsFromResponse);
+
+      }, err => this.handlerException(err));  
+    });
+    
+    return this.allTagsResult;
+  
+  }
+
+  public handlerException(err: HttpErrorResponse) {
+    this.subject.next(err);
+  }
 
 
 

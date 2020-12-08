@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Tag } from 'src/app/models/Tag';
 import { TagService } from 'src/app/sevices/tag/tag.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,6 +26,7 @@ export class NewExpenseComponent implements OnInit{
   public allTags: Tag[] = [];
   public filteredTags: Observable<Tag[]>;
   public removableChip: boolean = true;
+  public errorSubscription: Subscription;
 
   public expenseForm = new FormGroup({
     tags: new FormControl(undefined),
@@ -43,6 +44,11 @@ export class NewExpenseComponent implements OnInit{
   constructor(private tagService: TagService, private expenseService: ExpenseService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+
+    this.errorSubscription = this.tagService.onErrorOccurrs().subscribe( error => {
+      
+    });
+
     this.tagService.getAllTags().subscribe(response=> {
       this.allTags = response;
     });    

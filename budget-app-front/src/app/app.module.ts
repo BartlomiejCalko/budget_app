@@ -22,6 +22,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { AddedExpenseModalComponent } from './components/new-expense/added-expense-modal/added-expense-modal/added-expense-modal.component';
 import { ExpensesTableComponent } from './components/expenses-table/expenses-table/expenses-table.component';
 import { EditExpeneseModalComponent } from './components/expenses-table/edit-expense-modal/edit-expenese-modal/edit-expenese-modal.component';
+import { AlertComponent } from './components/common/alert/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { EditExpeneseModalComponent } from './components/expenses-table/edit-exp
     NewExpenseComponent,
     AddedExpenseModalComponent,
     ExpensesTableComponent,
-    EditExpeneseModalComponent
+    EditExpeneseModalComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

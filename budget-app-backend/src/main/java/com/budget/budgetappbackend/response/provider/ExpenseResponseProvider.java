@@ -2,7 +2,9 @@ package com.budget.budgetappbackend.response.provider;
 
 import com.budget.budgetappbackend.model.Expense;
 import com.budget.budgetappbackend.model.ExpensesSearchCriteria;
+import com.budget.budgetappbackend.model.Tag;
 import com.budget.budgetappbackend.service.ExpensesService;
+import com.budget.budgetappbackend.service.TagService;
 import com.budget.budgetappbackend.utils.CommonTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,11 +24,13 @@ public class ExpenseResponseProvider {
     private ExpensesService expensesService;
 
     @Autowired
+    private TagService tagService;
+
+    @Autowired
     private CommonTools commonTools;
 
     public ExpenseResponseEntity getAllExpenses() {
         ExpenseResponseEntity response = null;
-
         try {
             ExpensesList expenses = new ExpensesList(expensesService.getAllExpenses().get());
             response = new ExpenseResponseEntity(expenses, HttpStatus.OK);
@@ -35,10 +41,22 @@ public class ExpenseResponseProvider {
         return response;
     }
 
-    public ExpenseResponseEntity createExpense(Expense expense) {
+    public ExpenseResponseEntity saveExpense(Expense expense) {
         ExpenseResponseEntity response = null;
-
         try {
+            if (StringUtils.isEmpty(expense.getFormattedDate())) {
+                expense.setCreationDate(LocalDateTime.now());
+            }else {
+                LocalDateTime ldtFromISO = commonTools.getLocalDateTimeFromISODate(expense.getFormattedDate());
+                expense.setCreationDate(ldtFromISO);
+            }
+
+            List<Tag> tagsFromExpense = expense.getTags();
+            List<Tag> newTags = new ArrayList<>();
+            for(Tag currentTag: tagsFromExpense) {
+                newTags.add(tagService.createTag(currentTag.getName()));
+            }
+            expense.setTags(newTags);
             ExpensesList expenses = new ExpensesList(Arrays.asList(expensesService.createExpense(expense)));
             response = new ExpenseResponseEntity(expenses, HttpStatus.OK);
         } catch (Exception e) {
