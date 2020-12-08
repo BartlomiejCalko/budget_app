@@ -1,5 +1,7 @@
+import { ObserversModule } from '@angular/cdk/observers';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Expense } from 'src/app/models/Expense';
 import { Tag } from 'src/app/models/Tag';
 
@@ -8,33 +10,86 @@ import { Tag } from 'src/app/models/Tag';
 })
 export class ExpenseService {
 
-  constructor() { }
+  public retreivedExpenseResult: Observable<Expense[]>;
+  public deleteExpenseResult: Observable<Expense[]>;
+  public addedExpensesResult: Observable<Expense[]>;
+  public hostAdress: String = "http://localhost:8081/";
+  public subject = new Subject<HttpErrorResponse>();
+
+
+
+  constructor(private httpClient: HttpClient) { }
+
+  onErrorOccurrs(): Observable<HttpErrorResponse> {
+    return this.subject.asObservable();
+  }
 
   public deleteExpense(expenseId: number) {
-    //TODO - implement
-    return of([]);
+    this.deleteExpenseResult = new Observable(observer => {
+      let url = this.hostAdress + 'expense/' + expenseId;
+      this.httpClient.delete<any>(url).subscribe(response => {
+        observer.next(response);
+      }, err => this.handlerException(err));
+    });
+    return this.deleteExpenseResult;
   }
   public saveExpense(expense: Expense) {
-    //TODO - implement
-    return of([]);
+
+    this.addedExpensesResult = new Observable(observer => {
+
+      let url = this.hostAdress + "expense";
+      let httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type' : 'application/json'
+        })
+      };
+
+      let tagNames: string[] = [];
+      if (typeof(expense.tags)=="string") {
+        let tags: String = expense.tags;
+        let tagsArr = tags.split(',');
+        expense.tags = [];
+        tagsArr.forEach(val => expense.tags.push({name: val}));
+      }
+      expense.tags.forEach(val => tagNames.push(String(val.name)));
+      let objectToSend = null;
+      if (expense.id) {
+        objectToSend = {
+          "id" : expense.id,
+          "value" : expense.value,
+          "tags" : expense.tags,
+          "formatedDate" : expense.date}
+        } else {
+          objectToSend = {
+            "value" : expense.value,
+            "tags" : expense.tags
+          }
+        }
+
+        this.httpClient.post<any>(url, objectToSend, httpOptions).subscribe(response => {
+          observer.next(response);
+        }, err => this.handlerException(err));
+        
+
+    });
+
+    return this.addedExpensesResult;
+    
   }
 
+  public handlerException(err: HttpErrorResponse) {
+    this.subject.next(err);
+  }
 
   public getAllExpenses(): Observable<Expense[]> {
-    let expense1 = {
-      id:0,
-      tags: [{name: "tag1"}],
-      value: 20.20,
-      date: "2020-11-15"
-    }
-    let expense2 = {
-      id:1,
-      tags: [{name: "tag2"}],
-      value: 50.50,
-      date: "2020-11-13"
-    }
-
-    return of([expense1, expense2]);
+    this.retreivedExpenseResult = new Observable(observer => {
+      let url = this.hostAdress + "expenses";
+      this.httpClient.get(url).subscribe(response => {
+        let expenses = response['expenses'];
+        observer.next(expenses);
+      }, err => this.handlerException(err));
+    });
+    return this.retreivedExpenseResult;
   }
 
 
@@ -51,7 +106,7 @@ export class ExpenseService {
 
   public addExpense(expense: Expense) {
     
-    return of(expense);
+    return this.saveExpense(expense);
   }
 
 }

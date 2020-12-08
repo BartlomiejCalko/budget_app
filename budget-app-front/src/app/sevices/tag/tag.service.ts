@@ -9,7 +9,7 @@ import { Tag } from 'src/app/models/Tag';
 export class TagService {
 
   public allTagsResult: Observable<Tag[]>;
-  public hostAdress: String = 'http://localhost:8081/'
+  public hostAdress: String = "http://localhost:8081/"
   public subject = new Subject<HttpErrorResponse>();
 
   constructor(private http: HttpClient) { }

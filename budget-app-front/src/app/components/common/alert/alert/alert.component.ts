@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-alert',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlertComponent implements OnInit {
 
-  constructor() { }
+  public errorDisplayData: String;
+
+  constructor(public dialogRef: MatDialogRef<HttpErrorResponse>,
+    @Inject(MAT_DIALOG_DATA) public data: HttpErrorResponse) { }
 
   ngOnInit(): void {
+    this.errorDisplayData = JSON.stringify(this.data);
   }
+
+  public okClick() {
+    this.dialogRef.close();
+  }
+
+
+
 
 }
