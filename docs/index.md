@@ -1,12 +1,9 @@
 ## Try out budget_app
 
---
-
---
 
 ### App description
 
-budget_app is a tool to manage your expenses. App is build with Angular on frontend, Java on backend. Postgresql is used as database, but it can be easy replaced with any other database.
+budget_app is a tool to manage expenses. App is build with Angular on frontend, Java on backend. Postgresql is used as database, but it can be easy replaced with any other database.
 
 ```markdown
 Syntax highlighted code block
@@ -24,6 +21,12 @@ Syntax highlighted code block
 **Bold** and _Italic_ and `Code` text
 
 [Link](url) and ![Image](src)
+```
+
+```
+if (isAwesome){
+  return true
+}
 ```
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
