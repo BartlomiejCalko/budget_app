@@ -23,9 +23,11 @@ Syntax highlighted code block
 [Link](url) and ![Image](src)
 ```
 
-```
-if (isAwesome){
-  return true
+```java
+String fancyAlert(String arg) {
+  if(arg) {
+    $.facebox({div:'#foo'})
+  }
 }
 ```
 
