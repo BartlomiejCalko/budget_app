@@ -1,5 +1,5 @@
 ## **Try out budget_app**
-[Image of Yaktocat](https://octodex.github.com/daftpunktocat-guy)
+
 
 ### App description
 
@@ -14,4 +14,3 @@ Syntax highlighted code block
 ```
 
 
-![Image of Daftpunktocat-Guy](https://octodex.github.com/daftpunktocat-guy)
