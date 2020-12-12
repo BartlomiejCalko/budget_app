@@ -4,9 +4,9 @@ You can use the [editor on GitHub](https://github.com/BartlomiejCalko/budget_app
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+### budget_app
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+budget_app is a simple management tool for your company
 
 ```markdown
 Syntax highlighted code block
