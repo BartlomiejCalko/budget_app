@@ -1,4 +1,4 @@
-## Try out budget_app
+## **Try out budget_app**
 
 
 ### App description
