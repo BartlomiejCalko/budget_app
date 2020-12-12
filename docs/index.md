@@ -8,9 +8,9 @@ budget_app is a tool to manage expenses. App is build with Angular on frontend, 
 ```markdown
 Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+# This is an <h1> tag
+## This is an <h2> tag
+###### This is an <h6> tag
 
 - Bulleted
 - List
