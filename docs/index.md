@@ -8,6 +8,8 @@ budget_app is a tool which helps to store and manage expenses. App is build with
 ```markdown
 Syntax highlighted code block
 
+![Image of Yaktocat](https://octodex.github.com/daftpunktocat-guy)
+
 
 
 
