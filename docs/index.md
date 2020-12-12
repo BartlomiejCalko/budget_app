@@ -9,6 +9,11 @@ budget_app is a tool to manage expenses. App is build with Angular on frontend, 
 Syntax highlighted code block
 
 
+As Kanye West said:
+
+> We're living the future so
+> the present is our past.
+
 
 [Link](url) and ![Image](src)
 ```
