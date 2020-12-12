@@ -1,12 +1,12 @@
-## Welcome to GitHub Pages
+## Try out budget_app
 
-You can use the [editor on GitHub](https://github.com/BartlomiejCalko/budget_app/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+--
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+--
 
-### budget_app
+### App description
 
-budget_app is a simple management tool for your company
+budget_app is a tool to manage your expenses. App is build with Angular on frontend, Java on backend. Postgresql is used as database, but it can be easy replaced with any other database.
 
 ```markdown
 Syntax highlighted code block
